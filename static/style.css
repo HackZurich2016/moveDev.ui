@@ -46,15 +46,15 @@ input:focus{
 }
 
 #gameField{
-    height: 360px;
-    width: 360px;
+    height: 820px;
+    width: 820px;
 }
 
 .field {
-    height: 30px;
-    width: 30px;
-    border: 2px solid black;
-    margin: 1px;
+    height: 70px;
+    width: 70px;
+    border: 4px solid black;
+    margin: 2px;
     float: left;
 }
 
