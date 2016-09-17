@@ -2,6 +2,7 @@ html, body{
     height: 100%;
     padding: 0;
     margin: 0;
+    padding-top: 70px;
 }
 
 body, input, textarea {
@@ -60,6 +61,25 @@ input:focus{
     vertical-align: middle;
     line-height: 70px;  
     font-size: 35px;
+}
+
+.scoreboardContainer{
+    background-color: greenyellow;
+    position: absolute;
+    height: 100%;
+    margin-top: 30px;
+}
+
+.inviteContainer{
+    background-color: deepskyblue;
+    position: absolute;
+    height: 100%;
+}
+
+
+.scoreHeader{
+    background-color: darkblue;
+    color: white;
 }
 
 

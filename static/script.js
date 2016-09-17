@@ -71,6 +71,15 @@ function fieldClicked(sender){
   		gamestate.credits = gamestate.credits -1;
   		$("#credits").html(gamestate.credits);
 	}
-	
+}
+
+
+function sendInviteMsg(phoneNumber, msg)
+{
+	var sendURL = "https://api.tropo.com/1.0/sessions?action=create&token=6d674e4953675663776b4a6e416877657170616464564c6948666a4b5050576347667a79614d4b7161494668 &phonenumber=" + phoneNumber + "&msg=" + msg;
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", sendURL, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
 }
 
