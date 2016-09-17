@@ -11,8 +11,13 @@ function loadGameState(){
 
 	$.ajax({
 		type: "GET",
-		url: URLgetGameState + gameId,
+		url: URLgetGameState + "?id=" + gameId,
 		dataType: 'json',
+		beforeSend: function(xhr) {
+		 xhr.setRequestHeader(
+		    'Authorization', "Bearer " + localStorage.getItem('access_token')
+		 )
+		},
 		success: function( data ) {
 			console.log("Gamestate Successful loaded");
 			gamestate = data.gameState;
@@ -37,6 +42,11 @@ function callMove(){
 	$.ajax({
 		type: "POST",
 		url: URLgetGameState,
+		beforeSend: function(xhr) {
+		 xhr.setRequestHeader(
+		    'Authorization', "Bearer " + localStorage.getItem('access_token')
+		 )
+		},
 		dataType: 'json',
 		data:jsondata,
 		success: function( data ) {
