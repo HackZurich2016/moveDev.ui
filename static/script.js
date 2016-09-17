@@ -33,6 +33,7 @@ function callMove(){
 	}
 
 	$.ajax({
+		type: "POST",
 		url: URLgetGameState,
 		dataType: 'json',
 		data:jsondata,
