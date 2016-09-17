@@ -47,8 +47,8 @@ input:focus{
 }
 
 #gameField{
-    height: 820px;
-    width: 820px;
+    height: 800px;
+    width: 800px;
 }
 
 .field {
