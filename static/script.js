@@ -5,16 +5,18 @@ var URLgetGameState = "http://192.168.43.118:8000/game/";
 
 var senderCoordinates;
 var recieverCoordinates;
+var gameId = "";
 
 function loadGameState(){
 
 	$.ajax({
 		type: "GET",
-		url: URLgetGameState,
+		url: URLgetGameState + gameId,
 		dataType: 'json',
 		success: function( data ) {
 			console.log("Gamestate Successful loaded");
-			gamestate = data;
+			gamestate = data.gameState;
+			gameId = data.gameId;
 			redrawGameField();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
@@ -77,14 +79,30 @@ function redrawGameField(){
 	};
 
 
+
 	$(".field.player")
 		.mousedown(function() {
 			senderCoordinates = getFieldCoordinates(this);
-	 });
+
+
+			$(".field").on({
+			    mouseenter: function () {
+			        $(this).css("border-color", "red")
+			    },
+			    mouseleave: function () {
+			        $(this).css("border-color", "black")
+			    }
+			});
+	});
+
+	
 
 	$(".field ")
 	.mouseup(function() {
 		recieverCoordinates = getFieldCoordinates(this);
+
+		$('.field').off('mouseenter').off('mouseleave');
+		
 		callMove();
 	})
 }
@@ -99,12 +117,12 @@ function getFieldCoordinates(sender) {
 function fieldClicked(sender){
 	if(gamestate.credits > 0){
 		var x = $(sender).attr("x");
-  		var y = $(sender).attr("y");
-  		var coordinates = {"x":x,"y":y};
-  		gamestate.myFields.push(coordinates);
-  		$(sender).unbind("mouseleave");
-  		gamestate.credits = gamestate.credits -1;
-  		$("#credits").html(gamestate.credits);
+		var y = $(sender).attr("y");
+		var coordinates = {"x":x,"y":y};
+		gamestate.myFields.push(coordinates);
+		$(sender).unbind("mouseleave");
+		gamestate.credits = gamestate.credits -1;
+		$("#credits").html(gamestate.credits);
 	}
 }
 
@@ -112,7 +130,7 @@ function fieldClicked(sender){
 function sendInviteMsg(phoneNumber, msg)
 {
 	var sendURL = "https://api.tropo.com/1.0/sessions?action=create&token=6d674e4953675663776b4a6e416877657170616464564c6948666a4b5050576347667a79614d4b7161494668 &phonenumber=" + phoneNumber + "&msg=" + msg;
-    var xmlHttp = new XMLHttpRequest();
+	var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", sendURL, false ); // false for synchronous request
     xmlHttp.send( null );
     return xmlHttp.responseText;
