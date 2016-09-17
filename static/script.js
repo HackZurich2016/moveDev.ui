@@ -1,5 +1,5 @@
 var gamestate;
-var URLgetGameState = "http://192.168.43.118:8000/game/";
+var URLgetGameState = "http://8cf9ece0.ngrok.io/game/";
 
 //var URLgetGameState = "http://6fc04216.ngrok.io";
 
@@ -20,7 +20,7 @@ function loadGameState(){
 		},
 		success: function( data ) {
 			console.log("Gamestate Successful loaded");
-			gamestate = data.gameState;
+			gamestate = JSON.parse(data.gameState);
 			gameId = data.gameId;
 			redrawGameField();
 		},
@@ -41,16 +41,19 @@ function callMove(){
 
 	$.ajax({
 		type: "POST",
-		url: URLgetGameState,
+		url: 'http://8cf9ece0.ngrok.io/game/play/' + "?id=" + gameId,
 		beforeSend: function(xhr) {
 		 xhr.setRequestHeader(
 		    'Authorization', "Bearer " + localStorage.getItem('access_token')
 		 )
 		},
 		dataType: 'json',
-		data:jsondata,
+		data: jsondata,
 		success: function( data ) {
-			loadGameState();
+			console.log("Gamestate Successful loaded");
+			gamestate = JSON.parse(data.gameState);
+			gameId = data.gameId;
+			redrawGameField();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 			console.log(xhr.status);
@@ -82,6 +85,8 @@ function redrawGameField(){
 			}else{
 				fieldtype = "player";
 			}
+
+			console.log(fieldtype, fieldValue)
 
 			$("#gameField").append('<div class="field ' + fieldtype + '" x="' + x + '" y="' + y +'">' + fieldValue + '</div>');
 
