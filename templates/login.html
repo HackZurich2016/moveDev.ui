@@ -68,14 +68,14 @@
 <script>
     $(document).ready(function() {
         if(localStorage.getItem('access_token')!=null){
-            window.location.href = "/bootstrap.html";
+            window.location.href = "/bootstrap";
         };
 
         var $form = $('.form-signin');
         $form.on('submit', function(e) {
             e.preventDefault();
             $.ajax({
-                url: 'http://8cf9ece0.ngrok.io/login',
+                url: 'http://localhost:8000/login',
                 method: 'POST',
                 data: {
                     username: $('#inputUsername').val(),
@@ -83,7 +83,7 @@
                 },
                 success: function(data, e, xhr) {
                     localStorage.setItem("access_token", data.access_token);
-                    window.location.href = "/bootstrap.html";
+                    window.location.href = "/bootstrap";
                 }
             })
         });
