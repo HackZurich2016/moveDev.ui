@@ -68,7 +68,7 @@
 <script>
     $(document).ready(function() {
         if(localStorage.getItem('access_token')!=null){
-            window.location.href = "/";
+            window.location.href = "/bootstrap.html";
         };
 
         var $form = $('.form-signin');
@@ -83,7 +83,7 @@
                 },
                 success: function(data, e, xhr) {
                     localStorage.setItem("access_token", data.access_token);
-                    window.location.href = "/";
+                    window.location.href = "/bootstrap.html";
                 }
             })
         });

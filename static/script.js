@@ -174,7 +174,7 @@ function sendInviteMsg(phoneNumber, msg)
 	var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", sendURL, false ); // false for synchronous request
     xmlHttp.send( null );
-    return xmlHttp.responseText;
+    return true;
 }
 
 $( document ).ready(function() {

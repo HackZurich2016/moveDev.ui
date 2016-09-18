@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-5">
         <div class="scoreboardContainer">
 
             <ul class="list-group">
@@ -21,24 +21,14 @@
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-2"></div>
 
-        <div id="gameField">
-
-        </div>
-
-        <div id="header">
-            You have <strong id="credits">12</strong> Credits left
-        </div>
-
-    </div>
-    <div class="col-md-3">
+    <div class="col-md-5">
 
         <div class="inviteContainer">
-            Place the invite container here
 
-            <button type="button" class="btn btn-primary btn-lg"
-                    onclick="sendInviteMsg('+41798531750','You have been challenged! Either call 043 508 54 56 or write back with yes for accepting and no for declining the challenge.');">Invite</button>
+            <a type="button" class="btn btn-primary btn-lg"
+                    href="/" onclick="sendInviteMsg('+41798531750','You have been challenged! Either call 043 508 54 56 or write back with yes for accepting and no for declining the challenge.');">Invite co-worker</a>
 
 
         </div>
