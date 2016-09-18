@@ -1,11 +1,14 @@
 var gamestate;
-var URLgetGameState = "http://8cf9ece0.ngrok.io/game/";
+var URLApi = "http://localhost:8000"
+var URLgetGameState = URLApi + "/game/";
 
 //var URLgetGameState = "http://6fc04216.ngrok.io";
 
 var senderCoordinates;
 var recieverCoordinates;
 var gameId = "";
+var requestUserId = 0;
+var afterInit = false;
 
 function loadGameState(){
 
@@ -20,9 +23,12 @@ function loadGameState(){
 		},
 		success: function( data ) {
 			console.log("Gamestate Successful loaded");
+			console.log(typeof data.gameState)
 			gamestate = JSON.parse(data.gameState);
 			gameId = data.gameId;
+			requestUserId = data.owner;
 			redrawGameField();
+			afterInit = true;
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 			console.log(xhr.status);
@@ -41,7 +47,7 @@ function callMove(){
 
 	$.ajax({
 		type: "POST",
-		url: 'http://8cf9ece0.ngrok.io/game/play/' + "?id=" + gameId,
+		url: URLApi + '/game/play/' + "?id=" + gameId,
 		beforeSend: function(xhr) {
 		 xhr.setRequestHeader(
 		    'Authorization', "Bearer " + localStorage.getItem('access_token')
@@ -53,6 +59,7 @@ function callMove(){
 			console.log("Gamestate Successful loaded");
 			gamestate = JSON.parse(data.gameState);
 			gameId = data.gameId;
+			requestUserId = data.owner;
 			redrawGameField();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
@@ -67,18 +74,19 @@ function redrawGameField(){
 	$("#gameField").empty();
 	var x_max = 10;
 	var y_max = 10;
+	var fieldtype, tile, player_id=0;
+    console.log(gamestate)
 	for (var x = 0; x_max > x; x++) {
 		for (var y = 0; y_max > y; y++) {
 
 			color ="";
-			fieldValue = gamestate[x][y];
+			tile = gamestate[x][y];
+			fieldValue = tile.value;
+			player_id = tile.player_id;
 
-			var fieldtype;
-
-
-			if(fieldValue < 0){
+			if(requestUserId!=player_id && player_id!=0){
 				fieldtype = "enemy";
-				fieldValue= "";
+				fieldValue= fieldValue*"-1";
 			}else if(fieldValue < 1){
 				fieldtype = "none";
 				fieldValue= "";
@@ -122,6 +130,24 @@ function redrawGameField(){
 	})
 }
 
+function updateGameBoard() {
+    if(afterInit){
+        $.ajax({
+            url: URLApi + '/game/update/' + "?id=" + gameId,
+            method: 'GET',
+            success: function(data){
+                console.log('UPDATE')
+                gamestate = JSON.parse(data.gameState);
+                redrawGameField();
+                if(data.gamefinished) {
+                    alert('Game finished congrats!')
+                    window.location.reload();
+                }
+            }
+        })
+    }
+}
+
 function getFieldCoordinates(sender) {
 	var x = $(sender).attr("x");
 	var y = $(sender).attr("y");
@@ -153,4 +179,5 @@ function sendInviteMsg(phoneNumber, msg)
 
 $( document ).ready(function() {
 	loadGameState();
+	setInterval(updateGameBoard, 1000)
 });
